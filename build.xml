@@ -5,7 +5,6 @@
         <property name = "destdir"          value = "./Classes" />
         <property name = "docdir"           value = "./JavaDoc" />
         <property name = "instdir"          value = "./${ant.project.name}.app/Contents/Resources/Java" />
-        <property name = "library"          value = ""/>
         <property name = "copyright"        value = "Copyright 2016 *** All Right Reserved." />
         <property name = "zipname"          value = "${ant.project.name}" />
 
@@ -22,12 +21,23 @@
 
         <!-- target `compile` -->
         <target name = "compile" depends = "prepare" description = "compile all sources">
-            <javac fork = "true" srcdir = "${basedir}" destdir = "${destdir}" includeAntRuntime = "true" encoding = "UTF-8" deprecation = "on" verbose = "false">
+            <javac 
+                   fork                 = "true" 
+                   srcdir               = "${basedir}" 
+                   destdir              = "${destdir}" 
+                   includeAntRuntime    = "true" 
+                   encoding             = "UTF-8" 
+                   deprecation          = "on" 
+                   verbose              = "false">
                 <compilerarg value = "-J-Dfile.encoding=UTF8" />
                 <compilerarg value = "-Xlint:unchecked" />
                 <classpath>
-                    <pathelement location = "." />
-                </classpath>
+                    <pathelement path="${classpath}"/>
+                    <fileset dir="lib">
+                        <include name="**/*.jar"/>
+                    </fileset>
+                    <pathelement location="classes"/>
+                </classpath>    
             </javac>
             <exec executable = "date" spawn = "false" />
         </target>
