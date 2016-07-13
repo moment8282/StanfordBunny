@@ -5,6 +5,8 @@
         <property name = "destdir"          value = "./Classes" />
         <property name = "docdir"           value = "./JavaDoc" />
         <property name = "instdir"          value = "./${ant.project.name}.app/Contents/Resources/Java" />
+        <property name = "jogl"              value = "lib/jogl" />
+
         <property name = "copyright"        value = "Copyright 2016 *** All Right Reserved." />
         <property name = "zipname"          value = "${ant.project.name}" />
 
@@ -45,6 +47,7 @@
         <!-- target `jar` -->
         <target name = "jar" depends = "compile" description = "make jar file">
             <jar jarfile = "${package}.jar" basedir = "${destdir}" manifest = "${package}.mf">
+                <zipgroupfileset dir = "lib/jogl" includes="*.jar" />
             </jar>
             <exec executable = "date" spawn = "false" />
         </target>

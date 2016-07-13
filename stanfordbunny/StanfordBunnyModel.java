@@ -19,7 +19,7 @@ public class StanfordBunnyModel extends Object{
     private static final String FilePath = "resource/StanfordBunny.ply";     
     
     public StanfordBunnyModel(){
-        this.fileRead(FilePath);
+        //this.fileRead(FilePath);
     }
     
     
