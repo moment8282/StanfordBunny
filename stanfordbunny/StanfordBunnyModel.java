@@ -17,29 +17,27 @@ import java.util.ArrayList;
 
 public class StanfordBunnyModel extends Object{
     
+    private static final String FilePath = "resource/StanfordBunny.ply";     
+    private ArrayList<PlyVertexData> plyVertexData = new ArrayList<PlyVertexData>();
+    private ArrayList<PlyFaceData> plyFaceData = new ArrayList<PlyFaceData>();
+
     // 角度情報
     private float[] degree  = {0.0f,0.0f,0.0f};
     // 角度フラグ
     private Integer prevX   = -1;
     private Integer prevY   = -1;
-    
-    private static final String FilePath = "resource/StanfordBunny.ply"; 
-    private PlyData[] points = new PlyData[35947];
-    private int[][] face = new int[69451][4];
     private int prNum = 0;
-    private int j = 0; 
-    private int k = 0;
     
     public StanfordBunnyModel(){
         this.fileRead(FilePath);
     }
     
-    public PlyData[] getPoints(){
-        return points;
+    public ArrayList<PlyVertexData> getPlyVertexData(){
+        return plyVertexData;
     }
     
-    public int [][] getFace(){
-        return face;
+    public ArrayList<PlyFaceData> getPlyFaceData(){
+        return plyFaceData;
     }
     
     
@@ -53,7 +51,7 @@ public class StanfordBunnyModel extends Object{
             String line;
             while ((line = br.readLine()) != null) {
                 String[] pts = line.split(" ",0);
-                System.out.println(pts[0]);
+                //System.out.println(pts[0]);
                 prNum++;
                 if(pts[0].equals("end_header")){
                         break;
@@ -64,22 +62,21 @@ public class StanfordBunnyModel extends Object{
             while ((line = br.readLine()) != null) {
                 String[] pts = line.split(" ",0);
                 if(pts.length == 5){
-                        points[j] = new PlyData(Double.parseDouble(pts[0]),Double.parseDouble(pts[1]),Double.parseDouble(pts[2]),Double.parseDouble(pts[3]),Double.parseDouble(pts[4]));
-                    j++;
+                        PlyVertexData data = new PlyVertexData(Double.parseDouble(pts[0]),Double.parseDouble(pts[1]),Double.parseDouble(pts[2]),Double.parseDouble(pts[3]),Double.parseDouble(pts[4]));
+                    plyVertexData.add(data);
                 }else if(pts.length == 4){
-                    for(int i=0;i<pts.length;i++){
-                        if(i == 0){
-                            face[k][i] = Integer.parseInt(pts[i]); 
-                        }else{
-                            face[k][i] = Integer.parseInt(pts[i])-prNum;
-                        }
-                    }
-                    k++;
+                    Integer[] vi = new Integer[3];
+                    vi[0]=Integer.parseInt(pts[1])-prNum;
+                    vi[1]=Integer.parseInt(pts[2])-prNum;
+                    vi[2]=Integer.parseInt(pts[3])-prNum;
+                    PlyFaceData fData = new PlyFaceData(Integer.parseInt(pts[0]),vi);
+                    plyFaceData.add(fData); 
                 }
                 
             }
-            System.out.println("points size = " + points.length );
-            System.out.println("face size = " + face.length );
+            //System.out.println("vertex size = " + plyVertexData.size() );
+            //System.out.println("face size = " + plyFaceData.size() );
+            
             
         } catch (FileNotFoundException e) {
             e.printStackTrace();
