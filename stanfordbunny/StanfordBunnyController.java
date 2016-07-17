@@ -81,6 +81,6 @@ public class StanfordBunnyController extends Object{
         アプリケーションを終了する
         @param code 終了コード
     */
-    public void systemExit(int code){ System.exit(code); }
+    public void systemExit(Integer code){ System.exit(code); }
     
 }
