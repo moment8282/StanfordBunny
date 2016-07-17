@@ -1,13 +1,14 @@
+package stanfordbunny;
+
 /**
 
     StanfordBunnyController
     
-    @update     2016/06/22
+    @update     2016/07/18
     @develop    K.Asai ,
     
 */
 
-package stanfordbunny;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;

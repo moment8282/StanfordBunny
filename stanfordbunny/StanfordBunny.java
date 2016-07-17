@@ -3,7 +3,7 @@ package stanfordbunny;
 
     StanfordBunny
     
-    @update     2016/06/22
+    @update     2016/07/18
     @develop    K.Asai ,
     
 */
