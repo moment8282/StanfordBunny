@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class StanfordBunnyModel extends Object{
     
     private static final String FilePath = "resource/StanfordBunny.ply";     
-    private Double[][] points = new Double[35947][5];
+    private PlyData[] points = new PlyData[35947];
     private int[][] face = new int[69451][4];
     private int prNum = 0;
     private int j = 0; 
@@ -28,7 +28,7 @@ public class StanfordBunnyModel extends Object{
         this.fileRead(FilePath);
     }
     
-    public Double[][] getPoints(){
+    public PlyData[] getPoints(){
         return points;
     }
     
@@ -58,9 +58,7 @@ public class StanfordBunnyModel extends Object{
             while ((line = br.readLine()) != null) {
                 String[] pts = line.split(" ",0);
                 if(pts.length == 5){
-                    for(int i=0;i<pts.length;i++){
-                        points[j][i] = Double.parseDouble(pts[i]);
-                    }
+                        points[j] = new PlyData(Double.parseDouble(pts[0]),Double.parseDouble(pts[1]),Double.parseDouble(pts[2]),Double.parseDouble(pts[3]),Double.parseDouble(pts[4]));
                     j++;
                 }else if(pts.length == 4){
                     for(int i=0;i<pts.length;i++){
