@@ -1,4 +1,12 @@
 package stanfordbunny;
+/**
+
+    PlyFaceData
+    
+    @update     2016/07/18
+    @develop    Ehara
+    
+*/
 
 public class PlyVertexData extends Object{
 

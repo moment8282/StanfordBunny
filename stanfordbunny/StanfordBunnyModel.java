@@ -1,13 +1,13 @@
+package stanfordbunny;
+
 /**
 
     StanfordBunnyModel
     
-    @update     2016/06/22
-    @develop    K.Asai ,
+    @update     2016/06/18
+    @develop    K.Asai , Ehara
     
 */
-
-package stanfordbunny;
 
 import java.io.FileReader;
 import java.io.BufferedReader;

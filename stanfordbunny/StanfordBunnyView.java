@@ -1,4 +1,12 @@
 package stanfordbunny;
+/**
+
+    StanfordBunnyView
+    
+    @update     2016/07/18
+    @develop    K.Asai, Mitamura
+    
+*/
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;

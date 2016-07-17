@@ -1,3 +1,5 @@
+package stanfordbunny;
+
 /**
 
     StanfordBunnyTest
@@ -6,8 +8,6 @@
     @develop    K.Asai ,
     
 */
-
-package stanfordbunny;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLAutoDrawable;
