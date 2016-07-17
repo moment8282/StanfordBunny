@@ -16,11 +16,23 @@ import com.jogamp.newt.event.KeyAdapter;
 import com.jogamp.newt.event.KeyEvent;
 import java.lang.Math;
     
-public class StanfordBunnyView implements GLEventListener{
+public class StanfordBunnyView extends Object implements GLEventListener{
+    
+    // -------------------------------------------------
+    // フィールド
+    // -------------------------------------------------
+    private StanfordBunnyModel      model;
+    private StanfordBunnyController controller;
+    
     private Animator animator;
+    private GLWindow glWindow;
     private final GLU glu;
+    
+    // default rotate position
     private float[] rotate = {0.0f,0.0f,0.0f,0.0f};
+    
     private float scale = 0.0f;
+    // 頂点
     private float[][] vertex = {
         {-0.25f,-0.25f,-0.25f},
         {0.25f,-0.25f,-0.25f},
@@ -32,6 +44,7 @@ public class StanfordBunnyView implements GLEventListener{
         {-0.25f,0.25f,0.25f}
     };
     
+    // 辺
     private Integer[][] edge = {
         {0,1},
         {1,2},
@@ -47,6 +60,7 @@ public class StanfordBunnyView implements GLEventListener{
         {3,7}
     };
     
+    // 面
     private final Integer face[][] = {
         {0,1,2,3},
         {1,5,6,2},
@@ -56,6 +70,7 @@ public class StanfordBunnyView implements GLEventListener{
         {3,2,6,7}
     };
     
+    // 色
     private final float color[][] = {
         {1.0f,0.0f,0.0f},
         {0.0f,1.0f,0.0f},
@@ -65,13 +80,10 @@ public class StanfordBunnyView implements GLEventListener{
         {0.0f,1.0f,1.0f}
     };
     
+    // 角度
     private float[] degree = {0.0f,0.0f,0.0f};
     
-    // -------------------------------------------------
-    // フィールド
-    // -------------------------------------------------
-    private StanfordBunnyModel      model;
-    private StanfordBunnyController controller;
+
     
     // -------------------------------------------------
     // コンストラクタ
@@ -79,7 +91,25 @@ public class StanfordBunnyView implements GLEventListener{
     public StanfordBunnyView(StanfordBunnyModel aModel){
         this();
         this.model = aModel;
+    }
+    
+    // 指定コンストラクタ
+    public StanfordBunnyView(){
+        GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+        this.glWindow = GLWindow.create(caps);
+        glu = new GLU();
+        this.glWindow.setTitle("First Demo(Newt)");
+        this.glWindow.setSize(400,400);
         
+        
+        
+        this.glWindow.addGLEventListener(this);
+        
+        
+        animator = new Animator();
+        animator.add(glWindow);
+        animator.start();
+        this.glWindow.setVisible(true);
     }
     
     // -------------------------------------------------
@@ -87,85 +117,34 @@ public class StanfordBunnyView implements GLEventListener{
     // -------------------------------------------------
     public void setController(StanfordBunnyController aController){
         this.controller = aController;
-    }
-    
-    public StanfordBunnyView(){
-        GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
-        GLWindow glWindow = GLWindow.create(caps);
-        glu = new GLU();
-        glWindow.setTitle("First Demo(Newt)");
-        glWindow.setSize(400,400);
         
-        glWindow.addWindowListener(new WindowAdapter(){
+        // ここで、リスナーのセッティングを行う。
+        this.glWindow.addWindowListener(new WindowAdapter(){
             @Override
             public void windowDestroyed(WindowEvent evt){
-                System.exit(0);
+                controller.systemExit(0);
             }
         });
         
-        glWindow.addMouseListener(new MouseAdapter(){
-            private Integer prevX=-1;
-            private Integer prevY=-1;
+        this.glWindow.addMouseListener(new MouseAdapter(){
             @Override 
             public void mouseReleased(MouseEvent e){
-                prevX=-1;
-                prevY=-1;
+                controller.mouseReleased(e);
             }
             
             @Override
-            public void mouseDragged(MouseEvent evt){
-                
-                Integer x = evt.getX();
-                Integer y = evt.getY();
-                
-                if(!prevX.equals(-1) || !prevY.equals(-1)){
-                    Integer distanceX = (x-prevX)/2;
-                    Integer distanceY = (y-prevY)/2;
-                    
-                    setDegree(distanceY.floatValue(),distanceX.floatValue(),0);
-                }
-                    
-                
-                prevX = x;
-                prevY = y;
+            public void mouseDragged(MouseEvent e){                
+                degree = controller.mouseDraggedRotation(e);
                 startAnimator();
             }
         });
         
-        glWindow.addKeyListener(new KeyAdapter(){
+        this.glWindow.addKeyListener(new KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent key){
-                switch(key.getKeyChar()){
-                    case KeyEvent.VK_ESCAPE:
-                        break;
-                        
-                    case 'x':
-                        rotaX();
-                        break;
-                    
-                    case 'y':
-                        rotaY();
-                        break;
-                        
-                    case 'z':
-                        rotaZ();
-                        break;
-                }
+                degree = controller.keyPressedRotation(key);
             }
         });
-        
-        
-        glWindow.addGLEventListener(this);
-        
-        
-        animator = new Animator();
-        animator.add(glWindow);
-        animator.start();
-        glWindow.setVisible(true);
-    }
-    
-    public static void main(String[] args){
-        new StanfordBunnyView();
     }
     
     
@@ -174,8 +153,6 @@ public class StanfordBunnyView implements GLEventListener{
         GL2 gl = drawble.getGL().getGL2();
         gl.glClearColor(1.0f,1.0f,1.0f,1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
-        
-        
     }
     
     
@@ -267,9 +244,9 @@ public class StanfordBunnyView implements GLEventListener{
     }
     
     private void moveRotate(GL2 gl){
-        gl.glRotatef(degree[0],1,0,0);
-        gl.glRotatef(degree[1],0,1,0);
-        gl.glRotatef(degree[2],0,0,1);
+        gl.glRotatef(this.degree[0],1,0,0);
+        gl.glRotatef(this.degree[1],0,1,0);
+        gl.glRotatef(this.degree[2],0,0,1);
     }
     
     protected void makeLine(GL2 gl,float[] start,float[] end,float[] color){
@@ -293,29 +270,11 @@ public class StanfordBunnyView implements GLEventListener{
         animator.start();
     }
     
-    
-    
     public void pauseAnimator(){
         animator.pause();
     }
     
-    public void setDegree(float x,float y,float z){
-        degree[0] += x;
-        degree[1] += y;
-        degree[2] += z;
-    }
-    
-    public void rotaX(){
-        setDegree(1,0,0);
-    }
-    
-    public void rotaY(){
-        setDegree(0,1,0);
-    }
-    
-    public void rotaZ(){
-        setDegree(0,0,1);
-    }
+
     
     public void setScalse(float s){
         scale = s;
