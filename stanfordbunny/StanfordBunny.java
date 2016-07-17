@@ -1,3 +1,4 @@
+package stanfordbunny;
 /**
 
     StanfordBunny
@@ -7,7 +8,6 @@
     
 */
 
-package stanfordbunny;
 
 public class StanfordBunny extends Object{
     // -------------------------------------------------
@@ -37,7 +37,6 @@ public class StanfordBunny extends Object{
         this.controller.setModel(this.model);
         this.controller.setView(this.view);
         
-        new StanfordBunnyTest();
     }
     
 }
