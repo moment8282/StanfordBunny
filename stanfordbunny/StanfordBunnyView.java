@@ -218,8 +218,6 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         gl.glEnd();
         gl.glPopMatrix();*/
         
-        
-        
     }
     
     
