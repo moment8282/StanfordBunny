@@ -145,7 +145,7 @@ public class StanfordBunnyView extends Object implements GLEventListener{
             
             @Override
             public void mouseDragged(MouseEvent e){                
-                degree = controller.mouseDraggedRotation(e);
+                controller.mouseDraggedRotation(e);
                 startAnimator();
             }
         });
@@ -153,11 +153,18 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         this.glWindow.addKeyListener(new KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent key){
-                degree = controller.keyPressedRotation(key);
+                controller.keyPressed(key);
             }
         });
     }
     
+    public void setScale(float s){ this.scale = s; }
+    public void setDegree(float[] aDegree){ this.degree = aDegree; }
+    public void setDegree(float x,float y,float z){
+        this.degree[0] = x;
+        this.degree[1] = y;
+        this.degree[2] = z;
+    }
     
     
     
