@@ -105,12 +105,12 @@ public class StanfordBunnyController extends Object{
                 break;
                 
             case 's':
-                this.model.decreaseScale();
+                this.model.increaseScale();
                 this.view.setScale( this.model.getScale() );
                 break;
                 
             case 'S':
-                this.model.increaseScale();
+                this.model.decreaseScale();
                 this.view.setScale( this.model.getScale() );
                 break;   
         }
