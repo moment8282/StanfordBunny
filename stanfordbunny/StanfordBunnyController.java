@@ -67,12 +67,24 @@ public class StanfordBunnyController extends Object{
                 
             case 'x':
                 return this.model.rotaX();
-                       
+        
+            case 'X':
+                System.out.println("typed 'X'");
+                break;
+                
             case 'y':
                 return this.model.rotaY();
-                        
+            
+            case 'Y':
+                System.out.println("typed 'Y'");
+                break;          
+                
             case 'z':
                 return this.model.rotaZ();
+                
+            case 'Z':
+                System.out.println("typed 'Z'");
+                break;   
                 
             case 'r':
                 System.out.println("typed 'r'");
