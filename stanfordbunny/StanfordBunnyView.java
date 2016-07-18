@@ -109,8 +109,6 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         this.glWindow.setTitle("First Demo(Newt)");
         this.glWindow.setSize(400,400);
         
-        
-        
         this.glWindow.addGLEventListener(this);
         
         
