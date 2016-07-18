@@ -62,7 +62,13 @@ public class StanfordBunnyModel extends Object{
             while ((line = br.readLine()) != null) {
                 String[] pts = line.split(" ",0);
                 if(pts.length == 5){
-                        PlyVertexData data = new PlyVertexData(Double.parseDouble(pts[0]),Double.parseDouble(pts[1]),Double.parseDouble(pts[2]),Double.parseDouble(pts[3]),Double.parseDouble(pts[4]));
+                    PlyVertexData data = new PlyVertexData(
+                        Double.parseDouble(pts[0]),
+                        Double.parseDouble(pts[1]),
+                        Double.parseDouble(pts[2]),
+                        Double.parseDouble(pts[3]),
+                        Double.parseDouble(pts[4])
+                    );
                     plyVertexData.add(data);
                 }else if(pts.length == 4){
                     Integer[] vi = new Integer[3];
