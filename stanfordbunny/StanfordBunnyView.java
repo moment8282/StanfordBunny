@@ -153,24 +153,8 @@ public class StanfordBunnyView extends Object implements GLEventListener{
                 degree = controller.keyPressedRotation(key);
             }
         });
-//<<<<<<< Updated upstream
-    //}
-//make=======
-        
-        
-        //glWindow.addGLEventListener(this);
-        
-        
-        /*animator = new Animator();
-        animator.add(glWindow);
-        animator.start();
-        glWindow.setVisible(true);*/
+
     }
-    
-    /*public static void main(String[] args){
-        new StanfordBunnyView();
-    }*/
-//>>>>>>> Stashed changes
     
     
     @Override
@@ -254,18 +238,18 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         
     }
     
-    private void makeSquare(GL2 gl){
-        int i = 0;
-        gl.glRotatef(rotate[0],rotate[1],rotate[2],rotate[3]);
-        gl.glScalef(scale,scale,scale);
-        for(Integer[] element:edge){
-            gl.glColor3fv(color[i],0);
-            makeLine(gl,vertex[element[0]],vertex[element[1]]);
-            i++;
-        }
-        gl.glRotatef(-1*rotate[0],rotate[1],rotate[2],rotate[3]);
-        gl.glScalef(1/scale,1/scale,1/scale);
-    }
+//    private void makeSquare(GL2 gl){
+//        int i = 0;
+//        gl.glRotatef(rotate[0],rotate[1],rotate[2],rotate[3]);
+//        gl.glScalef(scale,scale,scale);
+//        for(Integer[] element:edge){
+//            gl.glColor3fv(color[i],0);
+//            makeLine(gl,vertex[element[0]],vertex[element[1]]);
+//            i++;
+//        }
+//        gl.glRotatef(-1*rotate[0],rotate[1],rotate[2],rotate[3]);
+//        gl.glScalef(1/scale,1/scale,1/scale);
+//    }
     
     private void makeSquareFill(GL2 gl){
         Integer i =0;
