@@ -128,7 +128,7 @@ public class StanfordBunnyModel extends Object{
     }
     
     /**
-        degreeの操作を行うメソッド５個
+        degreeの値を加算する
     */
     public void increaseDegree(float x,float y,float z){
         this.degree[0] += x;

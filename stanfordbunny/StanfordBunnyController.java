@@ -49,8 +49,9 @@ public class StanfordBunnyController extends Object{
         @param e
         @return degree(角度情報)を返す
     */
-    public float[] mouseDraggedRotation(MouseEvent e){
-        return this.model.rotation(e.getX(), e.getY());
+    public void mouseDraggedRotation(MouseEvent e){
+        this.model.rotation(e.getX(), e.getY());
+        this.view.setDegree(this.model.getDegree() );
     }
     
     
