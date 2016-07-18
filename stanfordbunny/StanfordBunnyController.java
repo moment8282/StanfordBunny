@@ -59,47 +59,61 @@ public class StanfordBunnyController extends Object{
         @param key
         @return degree(角度情報)を返す
     */
-    public float[] keyPressedRotation(KeyEvent key){
+    public void keyPressed(KeyEvent key){
         switch(key.getKeyChar()){
             case KeyEvent.VK_ESCAPE:
-                this.model.resetAll();
+                this.resetAllParameter();
                 break;   
                 
             case 'x':
-                return this.model.rotaX();
-        
+                this.model.rotaX();
+                this.view.setDegree( this.model.getDegree() );
+                break;
+                
             case 'X':
-                return this.model.derotaX();
+                this.model.derotaX();
+                this.view.setDegree( this.model.getDegree() );
+                break;
                 
             case 'y':
-                return this.model.rotaY();
-            
+                this.model.rotaY();
+                this.view.setDegree( this.model.getDegree() );
+                break;
+                
             case 'Y':
-                return this.model.derotaY();
+                this.model.derotaY();
+                this.view.setDegree( this.model.getDegree() );
+                break;
                 
             case 'z':
-                return this.model.rotaZ();
+                this.model.rotaZ();
+                this.view.setDegree( this.model.getDegree() );
+                break;
                 
             case 'Z':
-                return this.model.derotaZ();
+                this.model.derotaZ();
+                this.view.setDegree( this.model.getDegree() );
+                break;
                 
             case 'r':
-                this.model.resetAll();
+                this.resetAllParameter();
                 break;
                 
             case 'R':
-                this.model.resetAll();
+                this.resetAllParameter();
                 break;
                 
             case 's':
                 this.model.decreaseScale();
+                this.view.setScale( this.model.getScale() );
                 break;
                 
             case 'S':
                 this.model.increaseScale();
+                this.view.setScale( this.model.getScale() );
                 break;   
         }
-        return this.model.getDegree();
+        
     }
     
     
@@ -109,5 +123,15 @@ public class StanfordBunnyController extends Object{
         @param code 終了コード
     */
     public void systemExit(Integer code){ System.exit(code); }
+    
+    
+    /*
+        degree及びscaleをリセットする
+    */
+    private void resetAllParameter(){
+        this.model.resetAll();
+        this.view.setDegree( this.model.getDegree() );
+        this.view.setScale( this.model.getScale() );
+    }
     
 }

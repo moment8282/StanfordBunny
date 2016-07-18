@@ -4,7 +4,7 @@ package stanfordbunny;
 
     StanfordBunnyModel
     
-    @update     2016/06/18
+    @update     2016/07/18
     @develop    K.Asai , Ehara
     
 */
@@ -59,7 +59,7 @@ public class StanfordBunnyModel extends Object{
                 //System.out.println(pts[0]);
                 prNum++;
                 if(pts[0].equals("end_header")){
-                        break;
+                    break;
                 }else if(pts[0].equals("element")){
                     elementNumber.add( Integer.parseInt(pts[2]) );
                 }
@@ -107,73 +107,71 @@ public class StanfordBunnyModel extends Object{
     
     
     
-    
-    // --------------------------------------
-    // 以下、M-V-C連携時生成
-    
-    /*
-    リセットメソッド
-    */
-    public void resetAll(){
-        this.resetDegree();
-        this.resetScale();
-    }
-    
-    
-    /*
-        degreeの操作を行うメソッド５個
-        増加、減少、セッター、ゲッター、リセット
-    */
-    public void increaseDegree(float x,float y,float z){
-        this.degree[0] += x;
-        this.degree[1] += y;
-        this.degree[2] += z;
-    }
-    
-    public void decreaseDegree(float x,float y,float z){
-        this.degree[0] -= x;
-        this.degree[1] -= y;
-        this.degree[2] -= z;
-    }
-    
+    // ゲッター
+    public float getScale(){ return this.scale; }
+    public float[] getDegree(){ return this.degree; }
+
+    // セッター
+    public void setScale(float s){ this.scale = s; }
     public void setDegree(float x,float y,float z){
         this.degree[0] = x;
         this.degree[1] = y;
         this.degree[2] = z;
     }
     
-    public float[] getDegree(){ return this.degree; }
+    /**
+        scale及び、degreeを初期化する
+    */
+    public void resetAll(){
+        this.resetDegree();
+        this.resetScale();
+    }
     
+    /**
+        degreeの操作を行うメソッド５個
+    */
+    public void increaseDegree(float x,float y,float z){
+        this.degree[0] += x;
+        this.degree[1] += y;
+        this.degree[2] += z;
+    }
+
+    /**
+        degreeの値を減算する
+    */
+    public void decreaseDegree(float x,float y,float z){
+        this.degree[0] -= x;
+        this.degree[1] -= y;
+        this.degree[2] -= z;
+    }
+    
+    /**
+        degreeの値を初期化する
+    */
     public void resetDegree(){
         this.setDegree(0.0f,0.0f,0.0f);
     }
     
-    
-    
-    /*
-        scaleの情報を捜査するメソッド
-        セッター、ゲッター、増加、減少、リセット用のメソッド計５個
+    /**
+        scaleの値を0.1加算する
     */
-    public void setScale(float s){
-        this.scale = s;
-    }
-    
-    public float getScale(){
-        return this.scale;
-    }
-    
     public void increaseScale(){
         scale += 0.1;
     }
     
+    /**
+        scaleの値を0.1減算する
+    */
     public void decreaseScale(){
         scale -= 0.1;
     }
     
+    /**
+        scaleの値を初期化する
+    */
     public void resetScale(){
         this.setScale(1.0f);
     }
-    
     
     /**
         角度情報のフラグをリセットする(詳細未確認)
@@ -205,7 +203,7 @@ public class StanfordBunnyModel extends Object{
     
 
     /**
-        角度情報をX方向に更新する
+        角度情報をXの正の方向に更新する
         @return degree(角度情報)を返す
     */
     public float[] rotaX(){
@@ -213,6 +211,10 @@ public class StanfordBunnyModel extends Object{
         return this.getDegree();
     }
     
+    /**
+        角度情報をXの負の方向に更新する
+        @return degree(角度情報)を返す
+    */
     public float[] derotaX(){
         this.decreaseDegree(1,0,0);
         return this.getDegree();
@@ -220,7 +222,7 @@ public class StanfordBunnyModel extends Object{
     
     
     /**
-        角度情報をY方向に更新する
+        角度情報をYの正の方向に更新する
         @return degree(角度情報)を返す
     */
     public float[] rotaY(){
@@ -228,13 +230,17 @@ public class StanfordBunnyModel extends Object{
         return this.getDegree();
     }
     
+    /**
+        角度情報をYの負の方向に更新する
+        @return degree(角度情報)を返す
+    */
     public float[] derotaY(){
         this.decreaseDegree(0,1,0);
         return this.getDegree();
     }
     
     /**
-        角度情報をY方向に更新する
+        角度情報をZの正の方向に更新する
         @return degree(角度情報)を返す
     */
     public float[] rotaZ(){
@@ -242,6 +248,10 @@ public class StanfordBunnyModel extends Object{
         return this.getDegree();
     }
     
+    /**
+        角度情報をZの負の方向に更新する
+        @return degree(角度情報)を返す
+    */
     public float[] derotaZ(){
         this.decreaseDegree(0,0,1);
         return this.getDegree();
