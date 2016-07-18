@@ -99,6 +99,7 @@ public class StanfordBunnyController extends Object{
                 this.model.increaseScale();
                 break;   
         }
+        
         return this.model.getDegree();
     }
     
