@@ -24,6 +24,7 @@ import com.jogamp.newt.event.KeyAdapter;
 import com.jogamp.newt.event.KeyEvent;
 import java.lang.Math;
 import java.util.ArrayList;
+import java.nio.FloatBuffer;
     
 public class StanfordBunnyView extends Object implements GLEventListener{
     
@@ -155,16 +156,17 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         });
 
     }
-    
-    
+        
     @Override
     public void init(GLAutoDrawable drawble){
         GL2 gl = drawble.getGL().getGL2();
         gl.glClearColor(1.0f,1.0f,1.0f,1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glEnable(GL2.GL_LIGHTING);
-        gl.glEnable(GL2.GL_LIGHT0);
+        /*gl.glEnable(GL2.GL_LIGHT0);
+        gl.glEnable(GL2.GL_LIGHT1);
         gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_DIFFUSE,whiteLight,0);
+        gl.glLightfv(GL2.GL_LIGHT1,GL2.GL_AMBIENT,whiteLight,0);*/
     }
     
     
@@ -187,13 +189,21 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         GL2 gl = drawble.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         float[] lightDirection = {-5.0f,1.0f,-5.0f};
-        float[] diffuseLight = {1f,3f,1f,0f};
+        float[] specular = {1f,1f,1f,1f};
+        float[] diffuseLight = {1f,1f,1f,1f};
+        float[] ambient ={1f,1f,1f,1f};
+        float[] ambientPosition = {0f,0f,1f,1f};
         
+        makeLight(gl);
         
-        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_POSITION,light0pos,0);
+       /* gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_POSITION,light0pos,0);
         gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_SPOT_DIRECTION,lightDirection,0);
         gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_DIFFUSE,diffuseLight,0);
+        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_SPECULAR,specular,0);
+        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_AMBIENT,ambient,0);
         
+        gl.glLightfv( GL2.GL_LIGHT1,GL2.GL_POSITION,ambientPosition,0);
+        */
         gl.glPushMatrix();
         gl.glBegin(GL2.GL_LINES);
         makeAxis(gl);
@@ -238,18 +248,18 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         
     }
     
-//    private void makeSquare(GL2 gl){
-//        int i = 0;
-//        gl.glRotatef(rotate[0],rotate[1],rotate[2],rotate[3]);
-//        gl.glScalef(scale,scale,scale);
-//        for(Integer[] element:edge){
-//            gl.glColor3fv(color[i],0);
-//            makeLine(gl,vertex[element[0]],vertex[element[1]]);
-//            i++;
-//        }
-//        gl.glRotatef(-1*rotate[0],rotate[1],rotate[2],rotate[3]);
-//        gl.glScalef(1/scale,1/scale,1/scale);
-//    }
+   /* private void makeSquare(GL2 gl){
+        int i = 0;
+        gl.glRotatef(rotate[0],rotate[1],rotate[2],rotate[3]);
+        gl.glScalef(scale,scale,scale);
+        for(Integer[] element:edge){
+            gl.glColor3fv(color[i],0);
+            makeLine(gl,vertex[element[0]],vertex[element[1]]);
+            i++;
+        }
+        gl.glRotatef(-1*rotate[0],rotate[1],rotate[2],rotate[3]);
+        gl.glScalef(1/scale,1/scale,1/scale);
+    }*/
     
     private void makeSquareFill(GL2 gl){
         Integer i =0;
@@ -266,15 +276,29 @@ public class StanfordBunnyView extends Object implements GLEventListener{
     private void makeBunny(GL2 gl){
         ArrayList<PlyVertexData> vertexs = model.getPlyVertexData();
         ArrayList<PlyFaceData> faces = model.getPlyFaceData();
+        
+        if(!faces.get(0).getList().equals(3)){
+            System.exit(1);
+        }
         int i = 0;
-        float[] color = {1.0f,0.8f,0.7f};
+        float[] color = {0.6f,0.4f,0.4f};
+        float[] specular = {0.6f,0.4f,0.4f};
+        float[] diffuse = {0.6f,0.4f,0.4f};
+        float shine = 10.0f;
+    
+        
         Double[] normalVector;
+        
         gl.glPushMatrix();
         //gl.glColor3f(0.0f,1.0f,1.0f);
         gl.glScalef(5.0f,5.0f,5.0f);
+        moveRotate(gl);
         gl.glTranslatef(0.0f,-0.1f,0.0f);
         gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_AMBIENT,color,0);
-        moveRotate(gl);
+        gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_SPECULAR,specular,0);
+        gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_DIFFUSE,diffuse,0);
+        //gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_SHININESS,shine,0);
+        
         
         gl.glBegin(GL2.GL_TRIANGLES);
         //System.out.println("start");
@@ -311,7 +335,32 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         return normalVector;
     }
     
+    private void makeLight(GL2 gl){
+        gl.glEnable(GL2.GL_LIGHTING);
+        gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, this.asFloatBuffer(new float[] { 0.5f, 0.5f, 0.5f, 1.0f }));
+        gl.glLightModelf(GL2.GL_LIGHT_MODEL_LOCAL_VIEWER, 0.0f);
+        gl.glLightModelf(GL2.GL_LIGHT_MODEL_TWO_SIDE, 1.0f);
+        gl.glEnable(GL2.GL_LIGHT0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, this.asFloatBuffer(new float[] { 0.0f, 0.0f, 1.0f, 0.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPOT_DIRECTION, this.asFloatBuffer(new float[] { 0.0f, 0.0f, -1.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPOT_CUTOFF, this.asFloatBuffer(new float[] { 90.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, this.asFloatBuffer(new float[] { 0.5f, 0.5f, 0.5f, 1.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, this.asFloatBuffer(new float[] { 0.5f, 0.5f, 0.5f, 1.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_LINEAR_ATTENUATION, this.asFloatBuffer(new float[] { 0.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_QUADRATIC_ATTENUATION, this.asFloatBuffer(new float[] { 0.0f }));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_CONSTANT_ATTENUATION, this.asFloatBuffer(new float[] { 1.0f }));
+    }
     
+     private FloatBuffer asFloatBuffer(float[] array){
+        FloatBuffer buffer = FloatBuffer.allocate(array.length);
+        for (int i = 0; i < array.length; i++)
+        {
+            buffer.put(array[i]);
+        }
+        buffer.rewind();
+
+        return buffer;
+    }
     
     private void moveRotate(GL2 gl){
         gl.glRotatef(this.degree[0],1,0,0);
