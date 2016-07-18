@@ -66,9 +66,9 @@ public class StanfordBunnyModel extends Object{
                     plyVertexData.add(data);
                 }else if(pts.length == 4){
                     Integer[] vi = new Integer[3];
-                    vi[0]=Integer.parseInt(pts[1])-prNum;
-                    vi[1]=Integer.parseInt(pts[2])-prNum;
-                    vi[2]=Integer.parseInt(pts[3])-prNum;
+                    vi[0]=Integer.parseInt(pts[1])/*-prNum*/;
+                    vi[1]=Integer.parseInt(pts[2])/*-prNum*/;
+                    vi[2]=Integer.parseInt(pts[3])/*-prNum*/;
                     PlyFaceData fData = new PlyFaceData(Integer.parseInt(pts[0]),vi);
                     plyFaceData.add(fData); 
                 }
