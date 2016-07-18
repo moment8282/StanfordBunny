@@ -62,8 +62,9 @@ public class StanfordBunnyController extends Object{
     public float[] keyPressedRotation(KeyEvent key){
         switch(key.getKeyChar()){
             case KeyEvent.VK_ESCAPE:
-                break;
-                        
+                System.out.println("typed 'ESC'");
+                break;   
+                
             case 'x':
                 return this.model.rotaX();
                        
@@ -72,6 +73,22 @@ public class StanfordBunnyController extends Object{
                         
             case 'z':
                 return this.model.rotaZ();
+                
+            case 'r':
+                System.out.println("typed 'r'");
+                break;
+                
+            case 'R':
+                System.out.println("typed 'R'");
+                break;
+                
+            case 's':
+                System.out.println("typed 's'");
+                break;
+                
+            case 'S':
+                System.out.println("typed 'S'");
+                break;   
         }
         return this.model.getDegree();
     }
