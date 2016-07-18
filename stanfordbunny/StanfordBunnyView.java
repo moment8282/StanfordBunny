@@ -112,6 +112,8 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         this.glWindow.setTitle("First Demo(Newt)");
         this.glWindow.setSize(400,400);
         
+        
+        
         this.glWindow.addGLEventListener(this);
         
         
@@ -151,29 +153,20 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         this.glWindow.addKeyListener(new KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent key){
-                controller.keyPressed(key);
+                degree = controller.keyPressedRotation(key);
             }
         });
     }
-    public void setScale(float s){ this.scale = s; }
-    public void setDegree(float[] aDegree){ this.degree = aDegree; }
-    public void setDegree(float x,float y,float z){
-        this.degree[0] = x;
-        this.degree[1] = y;
-        this.degree[2] = z;
-    }
     
-        
+    
+    
+    
     @Override
     public void init(GLAutoDrawable drawble){
         GL2 gl = drawble.getGL().getGL2();
         gl.glClearColor(1.0f,1.0f,1.0f,1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glEnable(GL2.GL_LIGHTING);
-        /*gl.glEnable(GL2.GL_LIGHT0);
-        gl.glEnable(GL2.GL_LIGHT1);
-        gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_DIFFUSE,whiteLight,0);
-        gl.glLightfv(GL2.GL_LIGHT1,GL2.GL_AMBIENT,whiteLight,0);*/
     }
     
     
@@ -185,7 +178,7 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         gl.glLoadIdentity();
         
         glu.gluPerspective(20.0,(double)width/(double)height,1.0,300.0);
-        glu.gluLookAt(-1.0f,1.0f,3.0f,0.0f,0.0f,0.0f,0.0f,1.0f,0.0f);
+        
         
         gl.glMatrixMode(GL2.GL_MODELVIEW);
     }
@@ -195,22 +188,14 @@ public class StanfordBunnyView extends Object implements GLEventListener{
     public void display(GLAutoDrawable drawble){
         GL2 gl = drawble.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        float[] lightDirection = {-5.0f,1.0f,-5.0f};
-        float[] specular = {1f,1f,1f,1f};
-        float[] diffuseLight = {1f,1f,1f,1f};
-        float[] ambient ={1f,1f,1f,1f};
-        float[] ambientPosition = {0f,0f,1f,1f};
         
+         
+        
+        gl.glLoadIdentity();
+        glu.gluLookAt(-1.0f*model.getScale(),1.0f*model.getScale(),
+                      3.0f*model.getScale(),0.0f,0.0f,0.0f,0.0f,1.0f,0.0f);
         makeLight(gl);
-        
-       /* gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_POSITION,light0pos,0);
-        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_SPOT_DIRECTION,lightDirection,0);
-        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_DIFFUSE,diffuseLight,0);
-        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_SPECULAR,specular,0);
-        gl.glLightfv( GL2.GL_LIGHT0,GL2.GL_AMBIENT,ambient,0);
-        
-        gl.glLightfv( GL2.GL_LIGHT1,GL2.GL_POSITION,ambientPosition,0);
-        */
+
         gl.glPushMatrix();
         gl.glBegin(GL2.GL_LINES);
         makeAxis(gl);
@@ -218,12 +203,8 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         gl.glPopMatrix();
         
         makeBunny(gl);
-        /*gl.glPushMatrix();
-        moveRotate(gl);
-        gl.glBegin(GL2.GL_QUADS);
-        makeSquareFill(gl);
-        gl.glEnd();
-        gl.glPopMatrix();*/
+        
+        
         
     }
     
@@ -253,31 +234,6 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         
     }
     
-   /* private void makeSquare(GL2 gl){
-        int i = 0;
-        gl.glRotatef(rotate[0],rotate[1],rotate[2],rotate[3]);
-        gl.glScalef(scale,scale,scale);
-        for(Integer[] element:edge){
-            gl.glColor3fv(color[i],0);
-            makeLine(gl,vertex[element[0]],vertex[element[1]]);
-            i++;
-        }
-        gl.glRotatef(-1*rotate[0],rotate[1],rotate[2],rotate[3]);
-        gl.glScalef(1/scale,1/scale,1/scale);
-    }*/
-    
-    private void makeSquareFill(GL2 gl){
-        Integer i =0;
-        gl.glColor3f(0.0f,0.0f,0.0f);
-        for (Integer[] elements:face){
-            gl.glColor3fv(color[i],0);
-            i++;
-            for(Integer element:elements){
-                gl.glVertex3fv(vertex[element],0);
-            }
-        }
-    }
-    
     private void makeBunny(GL2 gl){
         ArrayList<PlyVertexData> vertexs = model.getPlyVertexData();
         ArrayList<PlyFaceData> faces = model.getPlyFaceData();
@@ -295,18 +251,15 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         Double[] normalVector;
         
         gl.glPushMatrix();
-        //gl.glColor3f(0.0f,1.0f,1.0f);
         gl.glScalef(5.0f,5.0f,5.0f);
         moveRotate(gl);
         gl.glTranslatef(0.0f,-0.1f,0.0f);
         gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_AMBIENT,color,0);
         gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_SPECULAR,specular,0);
         gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_DIFFUSE,diffuse,0);
-        //gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_SHININESS,shine,0);
         
         
         gl.glBegin(GL2.GL_TRIANGLES);
-        //System.out.println("start");
         for(PlyFaceData face : faces){
             normalVector=calculateNormalLine(face.getVertexIndices(),vertexs);
             gl.glNormal3d(normalVector[0],normalVector[1],normalVector[2]);
@@ -374,7 +327,6 @@ public class StanfordBunnyView extends Object implements GLEventListener{
     }
     
     protected void makeLine(GL2 gl,float[] start,float[] end,float[] color){
-        //gl.glColor3f(color[0],color[1],color[2]);
         gl.glMaterialfv(GL2.GL_FRONT,GL2.GL_AMBIENT,color,0);
         makeLine(gl,start,end);
     }
@@ -399,10 +351,5 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         animator.pause();
     }
     
-
-    
-    public void setScalse(float s){
-        scale = s;
-    }
     
 }
