@@ -37,57 +37,8 @@ public class StanfordBunnyView extends Object implements GLEventListener{
     private Animator animator;
     private GLWindow glWindow;
     private final GLU glu;
-    
-    
+
     private float scale = 0.0f;
-    // 頂点
-    private float[][] vertex = {
-        {-0.25f,-0.25f,-0.25f},
-        {0.25f,-0.25f,-0.25f},
-        {0.25f,0.25f,-0.25f},
-        {-0.25f,0.25f,-0.25f},
-        {-0.25f,-0.25f,0.25f},
-        {0.25f,-0.25f,0.25f},
-        {0.25f,0.25f,0.25f},
-        {-0.25f,0.25f,0.25f}
-    };
-    
-    // 辺
-    private Integer[][] edge = {
-        {0,1},
-        {1,2},
-        {2,3},
-        {3,0},
-        {4,5},
-        {5,6},
-        {6,7},
-        {7,4},
-        {0,4},
-        {1,5},
-        {2,6},
-        {3,7}
-    };
-    
-    // 面
-    private final Integer face[][] = {
-        {0,1,2,3},
-        {1,5,6,2},
-        {5,4,7,6},
-        {4,0,3,7},
-        {4,5,1,0},
-        {3,2,6,7}
-    };
-    
-    // 色
-    private final float color[][] = {
-        {1.0f,0.0f,0.0f},
-        {0.0f,1.0f,0.0f},
-        {0.0f,0.0f,1.0f},
-        {1.0f,1.0f,0.0f},
-        {1.0f,0.0f,1.0f},
-        {0.0f,1.0f,1.0f}
-    };
-    
     // 角度
     private float[] degree = {0.0f,0.0f,0.0f};
     
@@ -109,13 +60,10 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
         this.glWindow = GLWindow.create(caps);
         glu = new GLU();
-        this.glWindow.setTitle("First Demo(Newt)");
+        this.glWindow.setTitle("StanfordBunny");
         this.glWindow.setSize(400,400);
-        
-        
-        
+    
         this.glWindow.addGLEventListener(this);
-        
         
         animator = new Animator();
         animator.add(glWindow);
@@ -196,8 +144,6 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         GL2 gl = drawble.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         
-         
-        
         gl.glLoadIdentity();
         glu.gluLookAt(-1.0f*model.getScale(),1.0f*model.getScale(),
                       3.0f*model.getScale(),0.0f,0.0f,0.0f,0.0f,1.0f,0.0f);
@@ -210,8 +156,6 @@ public class StanfordBunnyView extends Object implements GLEventListener{
         gl.glPopMatrix();
         
         makeBunny(gl);
-        
-        
         
     }
     
